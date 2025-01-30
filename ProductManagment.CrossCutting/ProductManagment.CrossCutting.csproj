@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProductManagment.Application\ProductManagment.Application.csproj" />
     <ProjectReference Include="..\ProductManagment.Domain\ProductManagment.Domain.csproj" />
-    <ProjectReference Include="..\ProductManagment.Infrastructure\ProductManagment.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

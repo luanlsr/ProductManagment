@@ -1,4 +1,4 @@
-﻿namespace ProductManagment.Domain.Base
+﻿namespace ProductManagment.Domain.Core.Base
 {
     public abstract class EntityBase<TId>
     {

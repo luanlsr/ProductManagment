@@ -1,4 +1,6 @@
-﻿namespace ProductManagment.Domain.Base
+﻿using ProductManagment.Domain.Core.Base;
+
+namespace ProductManagment.Domain.Core.Interface
 {
     public interface IService<T, TId> where T : EntityBase<TId>
     {

@@ -1,4 +1,4 @@
-﻿using ProductManagment.Domain.Base;
+﻿using ProductManagment.Domain.Core.Interface;
 using ProductManagment.Domain.Entities;
 using System;
 using System.Collections.Generic;

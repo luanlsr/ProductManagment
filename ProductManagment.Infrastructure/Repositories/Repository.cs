@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductManagment.Domain.Base;
+using ProductManagment.Domain.Core.Interface;
 using ProductManagment.Infrastructure.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductManagment.Infrastructure.Repositories
 {

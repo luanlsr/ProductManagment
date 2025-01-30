@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductManagment.Domain.Base
+namespace ProductManagment.Domain.Core.Interface
 {
     public interface IRepository<TEntity, in TId> where TEntity : class where TId : struct
     {

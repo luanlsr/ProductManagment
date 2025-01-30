@@ -1,47 +1,81 @@
-﻿using ProductManagment.Domain.Base;
-using ProductManagment.Domain.Entities;
+﻿using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces;
 using ProductManagment.Domain.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using ProductManagment.Domain.Exceptions;
+using ProductManagment.Domain.ValueObjects;
+using FluentValidation;
 
 namespace ProductManagment.Application.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : BaseService, IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<Order> _validator;
 
-        public OrderService(IUnitOfWork unitOfWork)
+        public OrderService(IUnitOfWork unitOfWork, IValidator<Order> validator)
         {
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
-        public Task AddAsync(Order entity)
+        public async Task AddAsync(Order entity)
         {
-            throw new NotImplementedException();
+            Validate(entity, _validator);
+
+            await _unitOfWork.OrderRepository.AddAsync(entity);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task DeleteAsync(Order entity)
+        public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var orders = await _unitOfWork.OrderRepository.ListAsync();
+            if (orders == null)
+                throw new NotFoundException("No orders found.");
+
+            return orders;
         }
 
-        public Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<Order> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if (id == Guid.Empty)
+                throw new ValidationException("Invalid order ID.");
+
+            var order = await _unitOfWork.OrderRepository.GetByIdAsync(id);
+            if (order == null)
+                throw new NotFoundException($"Order with ID {id} not found.");
+
+            return order;
         }
 
-        public Task<Order> GetByIdAsync(Guid id)
+        public async Task UpdateStatusAsync(Guid orderId, OrderStatus status)
         {
-            throw new NotImplementedException();
+            if (orderId == Guid.Empty)
+                throw new ValidationException("Invalid order ID.");
+
+            var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+            if (order == null)
+                throw new NotFoundException($"Order with ID {orderId} not found.");
+
+            order.UpdateStatus(status);
+
+            await _unitOfWork.OrderRepository.UpdateAsync(order);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task UpdateAsync(Order entity)
+        public async Task DeleteAsync(Order entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ValidationException("Order cannot be null.");
+
+            var existingOrder = await _unitOfWork.OrderRepository.GetByIdAsync(entity.Id);
+            if (existingOrder == null)
+                throw new NotFoundException($"Order with ID {entity.Id} not found.");
+
+            await _unitOfWork.OrderRepository.DeleteAsync(existingOrder.Id);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

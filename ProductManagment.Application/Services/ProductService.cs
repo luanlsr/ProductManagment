@@ -1,47 +1,78 @@
-﻿using ProductManagment.Domain.Base;
-using ProductManagment.Domain.Entities;
+﻿using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces;
 using ProductManagment.Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProductManagment.Domain.Exceptions;
+using ProductManagment.Application.Validations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+using FluentValidation;
 
 namespace ProductManagment.Application.Services
 {
-    public class ProductService : IProductService
+    public class ProductService : BaseService, IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<Product> _validator;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IValidator<Product> validator)
         {
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
-        public Task AddAsync(Product entity)
+        public async Task AddAsync(Product entity)
         {
-            throw new NotImplementedException();
+            Validate(entity, _validator);
+
+            await _unitOfWork.ProductRepository.AddAsync(entity);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task DeleteAsync(Product entity)
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var products = await _unitOfWork.ProductRepository.ListAsync();
+            if (products == null)
+                throw new NotFoundException("No products found.");
+
+            return products;
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<Product> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if (id == Guid.Empty)
+                throw new ValidationException("Invalid product ID.");
+
+            var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
+            if (product == null)
+                throw new NotFoundException($"Product with ID {id} not found.");
+
+            return product;
         }
 
-        public Task<Product> GetByIdAsync(Guid id)
+        public async Task UpdateAsync(Product entity)
         {
-            throw new NotImplementedException();
+            Validate(entity, _validator);
+
+            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(entity.Id);
+            if (existingProduct == null)
+                throw new NotFoundException($"Product with ID {entity.Id} not found.");
+
+            existingProduct.Update(entity.Name, entity.Description, entity.Price, entity.Category, entity.SKU);
+
+            await _unitOfWork.ProductRepository.UpdateAsync(existingProduct);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task UpdateAsync(Product entity)
+        public async Task DeleteAsync(Product entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ValidationException("Product cannot be null.");
+
+            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(entity.Id);
+            if (existingProduct == null)
+                throw new NotFoundException($"Product with ID {entity.Id} not found.");
+
+            await _unitOfWork.ProductRepository.DeleteAsync(existingProduct.Id);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

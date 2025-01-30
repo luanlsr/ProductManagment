@@ -1,4 +1,4 @@
-﻿using ProductManagment.Domain.Base;
+﻿using ProductManagment.Domain.Core.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using ProductManagment.Domain.ValueObjects;

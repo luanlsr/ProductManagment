@@ -1,4 +1,5 @@
 using ProductManagment.Web.Extensions;
+using ProductManagment.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseRouting();
 app.UseAuthorization();
 

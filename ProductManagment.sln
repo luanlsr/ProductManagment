@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Web", "ProductManagment.Web\ProductManagment.Web.csproj", "{A514FCA9-CCDA-4008-9A0A-7DBA456611DF}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{1F9F50A4-E20F-4453-A575-DE4D878AFD53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{2F5D6552-619F-444E-8FAC-27E5903A1C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Domain.Core", "ProductManagment.Domain.Core\ProductManagment.Domain.Core.csproj", "{2E5AA789-2735-47E8-983A-75A11D5B3C7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.CrossCutting", "ProductManagment.CrossCutting\ProductManagment.CrossCutting.csproj", "{58CA5243-0770-46D5-8C6F-28FA5D610276}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - CrossCutting", "5 - CrossCutting", "{AC1556D3-4086-4155-B1EB-EAACDE32181A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +47,14 @@ Global
 		{54ACC33D-0BC3-41FF-B712-2F449D0869EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54ACC33D-0BC3-41FF-B712-2F449D0869EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54ACC33D-0BC3-41FF-B712-2F449D0869EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5AA789-2735-47E8-983A-75A11D5B3C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5AA789-2735-47E8-983A-75A11D5B3C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5AA789-2735-47E8-983A-75A11D5B3C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5AA789-2735-47E8-983A-75A11D5B3C7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +64,7 @@ Global
 		{2856F767-0912-4B89-89FA-BCFF76A6DDAC} = {1F9F50A4-E20F-4453-A575-DE4D878AFD53}
 		{15B7BA1F-209F-4817-82BF-0792E6DFE0D4} = {4510BDDD-15CC-4611-8AC7-3687F7F81CEB}
 		{54ACC33D-0BC3-41FF-B712-2F449D0869EE} = {2F5D6552-619F-444E-8FAC-27E5903A1C7F}
+		{2E5AA789-2735-47E8-983A-75A11D5B3C7E} = {1F9F50A4-E20F-4453-A575-DE4D878AFD53}
+		{58CA5243-0770-46D5-8C6F-28FA5D610276} = {AC1556D3-4086-4155-B1EB-EAACDE32181A}
 	EndGlobalSection
 EndGlobal
