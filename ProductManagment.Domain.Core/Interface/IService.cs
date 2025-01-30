@@ -2,7 +2,7 @@
 
 namespace ProductManagment.Domain.Core.Interface
 {
-    public interface IService<T, TId> where T : EntityBase<TId>
+    public interface IService<T, TId> where T : EntityBaseDTO<TId>
     {
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();

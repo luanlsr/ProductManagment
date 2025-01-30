@@ -1,5 +1,4 @@
-﻿using ProductManagment.Domain.Base;
-using ProductManagment.Domain.Interfaces;
+﻿using ProductManagment.Domain.Interfaces;
 using ProductManagment.Infrastructure.Context;
 using ProductManagment.Infrastructure.Repositories;
 using ProductManagment.Infrastructure;

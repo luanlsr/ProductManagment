@@ -1,4 +1,4 @@
-﻿using ProductManagment.Application.Exceptions;
+﻿using FluentValidation;
 using ProductManagment.Domain.Exceptions;
 using System.Net;
 using System.Text.Json;

@@ -5,38 +5,46 @@ using ProductManagment.Domain.Exceptions;
 using ProductManagment.Application.Validations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 using FluentValidation;
+using ProductManagment.Domain.DTOs;
+using AutoMapper;
+using ProductManagment.Domain.Core.Interface;
 
 namespace ProductManagment.Application.Services
 {
     public class ProductService : BaseService, IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IValidator<Product> _validator;
+        private readonly IValidator<ProductDTO> _validator;
+        private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork, IValidator<Product> validator)
+        public ProductService(IUnitOfWork unitOfWork, IValidator<ProductDTO> validator, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+            _mapper = mapper;
         }
 
-        public async Task AddAsync(Product entity)
+        public async Task AddAsync(ProductDTO productDto)
         {
-            Validate(entity, _validator);
+            Validate(productDto, _validator);
+            var entity = _mapper.Map<Product>(productDto);
 
             await _unitOfWork.ProductRepository.AddAsync(entity);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
             var products = await _unitOfWork.ProductRepository.ListAsync();
             if (products == null)
                 throw new NotFoundException("No products found.");
 
-            return products;
+            var productsDTO = _mapper.Map<List<ProductDTO>>(products);
+
+            return productsDTO;
         }
 
-        public async Task<Product> GetByIdAsync(Guid id)
+        public async Task<ProductDTO> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ValidationException("Invalid product ID.");
@@ -45,31 +53,33 @@ namespace ProductManagment.Application.Services
             if (product == null)
                 throw new NotFoundException($"Product with ID {id} not found.");
 
-            return product;
+            var productDTO = _mapper.Map<ProductDTO>(product);
+
+            return productDTO;
         }
 
-        public async Task UpdateAsync(Product entity)
+        public async Task UpdateAsync(ProductDTO productDto)
         {
-            Validate(entity, _validator);
+            Validate(productDto, _validator);
 
-            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(entity.Id);
+            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(productDto.Id);
             if (existingProduct == null)
-                throw new NotFoundException($"Product with ID {entity.Id} not found.");
+                throw new NotFoundException($"Product with ID {productDto.Id} not found.");
 
-            existingProduct.Update(entity.Name, entity.Description, entity.Price, entity.Category, entity.SKU);
+            existingProduct.Update(productDto.Name, productDto.Description, productDto.Price, productDto.Category, productDto.SKU);
 
             await _unitOfWork.ProductRepository.UpdateAsync(existingProduct);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteAsync(Product entity)
+        public async Task DeleteAsync(ProductDTO productDto)
         {
-            if (entity == null)
+            if (productDto == null)
                 throw new ValidationException("Product cannot be null.");
 
-            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(entity.Id);
+            var existingProduct = await _unitOfWork.ProductRepository.GetByIdAsync(productDto.Id);
             if (existingProduct == null)
-                throw new NotFoundException($"Product with ID {entity.Id} not found.");
+                throw new NotFoundException($"Product with ID {productDto.Id} not found.");
 
             await _unitOfWork.ProductRepository.DeleteAsync(existingProduct.Id);
             await _unitOfWork.CommitAsync();

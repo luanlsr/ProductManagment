@@ -1,75 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MeuProjetoMVC.Data;
-using MeuProjetoMVC.Models;
-using System.Linq;
+using ProductManagment.Domain.DTOs;
+using ProductManagment.Domain.Entities;
+using ProductManagment.Domain.Interfaces.Services;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace MeuProjetoMVC.Controllers
+namespace ProductManagment.Web.Controllers
 {
-    public class ProductsController : Controller
+    [ApiController]
+    [Route("api/products")]
+    public class ProductController : ControllerBase
     {
-        private readonly IClientService _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(AppDbContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
-        }
-
-        public IActionResult Index() => View(_context.Products.ToList());
-
-        public IActionResult Create() => View();
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Products.Add(product);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
-        }
-
-        public IActionResult Edit(int id)
-        {
-            var product = _context.Products.Find(id);
-            if (product == null) return NotFound();
-            return View(product);
+            _productService = productService;
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product product)
+        public async Task<ActionResult> Create([FromBody] ProductDTO productDto)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Products.Update(product);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
+            await _productService.AddAsync(productDto);
+            return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, productDto);
         }
 
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
-            var product = _context.Products.Find(id);
+            return Ok(await _productService.GetAllAsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDTO>> GetById(Guid id)
+        {
+            return Ok(await _productService.GetByIdAsync(id));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(Guid id, [FromBody] ProductDTO productDto)
+        {
+            if (id != productDto.Id) return BadRequest("ID mismatch");
+
+            await _productService.UpdateAsync(productDto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var product = await _productService.GetByIdAsync(id);
             if (product == null) return NotFound();
-            return View(product);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var product = _context.Products.Find(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                _context.SaveChanges();
-            }
-            return RedirectToAction(nameof(Index));
+            await _productService.DeleteAsync(product);
+            return NoContent();
         }
     }
 }

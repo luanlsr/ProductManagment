@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductManagment.Application.DTOs
+namespace ProductManagment.Domain.Core.Base
 {
-    public class ClientDTO
+    public abstract class EntityBaseDTO<TId>
     {
+        public Guid Id { get; set; }
     }
 }

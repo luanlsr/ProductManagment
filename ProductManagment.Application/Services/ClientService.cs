@@ -6,38 +6,46 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProductManagment.Domain.Exceptions;
 using FluentValidation;
+using ProductManagment.Domain.DTOs;
+using AutoMapper;
 
 namespace ProductManagment.Application.Services
 {
     public class ClientService : BaseService, IClientService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IValidator<Client> _validator;
+        private readonly IValidator<ClientDTO> _validator;
+        private readonly IMapper _mapper;
 
-        public ClientService(IUnitOfWork unitOfWork, IValidator<Client> validator)
+        public ClientService(IUnitOfWork unitOfWork, IValidator<ClientDTO> validator, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+            _mapper = mapper;
         }
 
-        public async Task AddAsync(Client entity)
+        public async Task AddAsync(ClientDTO clientDto)
         {
-            Validate(entity, _validator);
+            Validate(clientDto, _validator);
+
+            var entity = _mapper.Map<Client>(clientDto);
 
             await _unitOfWork.ClientRepository.AddAsync(entity);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<Client>> GetAllAsync()
+        public async Task<IEnumerable<ClientDTO>> GetAllAsync()
         {
             var clients = await _unitOfWork.ClientRepository.ListAsync();
             if (clients == null)
                 throw new NotFoundException("No clients found.");
 
-            return clients;
+            var clientsDto = _mapper.Map<List<ClientDTO>>(clients);
+
+            return clientsDto;
         }
 
-        public async Task<Client> GetByIdAsync(Guid id)
+        public async Task<ClientDTO> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ValidationException("Invalid client ID.");
@@ -46,24 +54,24 @@ namespace ProductManagment.Application.Services
             if (client == null)
                 throw new NotFoundException($"Client with ID {id} not found.");
 
-            return client;
+            var clientDto = _mapper.Map<ClientDTO>(client);
+
+            return clientDto;
         }
 
-        public async Task UpdateAsync(Client entity)
+        public async Task UpdateAsync(ClientDTO clientDto)
         {
-            Validate(entity, _validator);
+            Validate(clientDto, _validator);
 
-            var existingClient = await _unitOfWork.ClientRepository.GetByIdAsync(entity.Id);
+            var existingClient = await _unitOfWork.ClientRepository.GetByIdAsync(clientDto.Id);
             if (existingClient == null)
-                throw new NotFoundException($"Client with ID {entity.Id} not found.");
-
-            existingClient.Update(entity.Name, entity.Email, entity.Phone);
+                throw new NotFoundException($"Client with ID {clientDto.Id} not found.");
 
             await _unitOfWork.ClientRepository.UpdateAsync(existingClient);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteAsync(Client entity)
+        public async Task DeleteAsync(ClientDTO entity)
         {
             if (entity == null)
                 throw new ValidationException("Client cannot be null.");

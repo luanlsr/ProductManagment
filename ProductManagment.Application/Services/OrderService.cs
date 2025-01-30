@@ -1,44 +1,48 @@
 ﻿using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces;
 using ProductManagment.Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ProductManagment.Domain.Exceptions;
 using ProductManagment.Domain.ValueObjects;
 using FluentValidation;
+using ProductManagment.Domain.DTOs;
+using AutoMapper;
 
 namespace ProductManagment.Application.Services
 {
     public class OrderService : BaseService, IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IValidator<Order> _validator;
+        private readonly IValidator<OrderDTO> _validator;
+        private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWork unitOfWork, IValidator<Order> validator)
+        public OrderService(IUnitOfWork unitOfWork, IValidator<OrderDTO> validator, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+            _mapper = mapper;
         }
 
-        public async Task AddAsync(Order entity)
+        public async Task AddAsync(OrderDTO orderDto)
         {
-            Validate(entity, _validator);
+            Validate(orderDto, _validator);
+
+            var entity = _mapper.Map<Order>(orderDto);
 
             await _unitOfWork.OrderRepository.AddAsync(entity);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<IEnumerable<OrderDTO>> GetAllAsync()
         {
             var orders = await _unitOfWork.OrderRepository.ListAsync();
             if (orders == null)
                 throw new NotFoundException("No orders found.");
 
-            return orders;
+            var ordersDto = _mapper.Map<List<OrderDTO>>(orders);
+            return ordersDto;
         }
 
-        public async Task<Order> GetByIdAsync(Guid id)
+        public async Task<OrderDTO> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 throw new ValidationException("Invalid order ID.");
@@ -47,25 +51,27 @@ namespace ProductManagment.Application.Services
             if (order == null)
                 throw new NotFoundException($"Order with ID {id} not found.");
 
-            return order;
+            var orderDto = _mapper.Map<OrderDTO>(order);
+
+            return orderDto;
         }
 
-        public async Task UpdateStatusAsync(Guid orderId, OrderStatus status)
+        public async Task UpdateStatusAsync(OrderDTO orderDto)
         {
-            if (orderId == Guid.Empty)
+            if (orderDto.Id == Guid.Empty)
                 throw new ValidationException("Invalid order ID.");
 
-            var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
-            if (order == null)
-                throw new NotFoundException($"Order with ID {orderId} not found.");
+            var existingOrder = await _unitOfWork.OrderRepository.GetByIdAsync(orderDto.Id);
+            if (existingOrder == null)
+                throw new NotFoundException($"Order with ID {orderDto.Id} not found.");
 
-            order.UpdateStatus(status);
+            existingOrder.UpdateStatus(orderDto.Status);
 
-            await _unitOfWork.OrderRepository.UpdateAsync(order);
+            await _unitOfWork.OrderRepository.UpdateAsync(existingOrder);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteAsync(Order entity)
+        public async Task DeleteAsync(OrderDTO entity)
         {
             if (entity == null)
                 throw new ValidationException("Order cannot be null.");

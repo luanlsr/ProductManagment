@@ -1,14 +1,9 @@
 ﻿using ProductManagment.Domain.Core.Interface;
-using ProductManagment.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProductManagment.Domain.DTOs;
 
 namespace ProductManagment.Domain.Interfaces.Services
 {
-    public interface IStockService : IService<Stock, Guid>
+    public interface IStockService : IService<StockDTO, Guid>
     {
     }
 }

@@ -1,20 +1,20 @@
 ﻿using ProductManagment.Domain.Core.Interface;
+using ProductManagment.Domain.DTOs;
 using ProductManagment.Domain.Entities;
-using ProductManagment.Domain.Exceptions;
 using ProductManagment.Domain.ValueObjects;
 
 namespace ProductManagment.Domain.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task AddAsync(Order entity);
+        Task AddAsync(OrderDTO entity);
 
-        Task<IEnumerable<Order>> GetAllAsync();
+        Task<IEnumerable<OrderDTO>> GetAllAsync();
 
-        Task<Order> GetByIdAsync(Guid id);
+        Task<OrderDTO> GetByIdAsync(Guid id);
 
-        Task UpdateStatusAsync(Guid orderId, OrderStatus status);
+        Task UpdateStatusAsync(OrderDTO entity);
 
-        Task DeleteAsync(Order entity);
+        Task DeleteAsync(OrderDTO entity);
     }
 }
