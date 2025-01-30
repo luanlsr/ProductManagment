@@ -8,7 +8,7 @@ namespace MeuProjetoMVC.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IClientService _context;
 
         public ProductsController(AppDbContext context)
         {
