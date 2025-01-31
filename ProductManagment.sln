@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Web", "ProductManagment.Web\ProductManagment.Web.csproj", "{A514FCA9-CCDA-4008-9A0A-7DBA456611DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Web", "src\ProductManagment.Web\ProductManagment.Web.csproj", "{A514FCA9-CCDA-4008-9A0A-7DBA456611DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Domain", "ProductManagment.Domain\ProductManagment.Domain.csproj", "{2856F767-0912-4B89-89FA-BCFF76A6DDAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Domain", "src\ProductManagment.Domain\ProductManagment.Domain.csproj", "{2856F767-0912-4B89-89FA-BCFF76A6DDAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Application", "ProductManagment.Application\ProductManagment.Application.csproj", "{15B7BA1F-209F-4817-82BF-0792E6DFE0D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Application", "src\ProductManagment.Application\ProductManagment.Application.csproj", "{15B7BA1F-209F-4817-82BF-0792E6DFE0D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Infrastructure", "ProductManagment.Infrastructure\ProductManagment.Infrastructure.csproj", "{54ACC33D-0BC3-41FF-B712-2F449D0869EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Infrastructure", "src\ProductManagment.Infrastructure\ProductManagment.Infrastructure.csproj", "{54ACC33D-0BC3-41FF-B712-2F449D0869EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{2C487660-A775-4C4D-866E-03C6CC50E8E1}"
 EndProject
@@ -19,11 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{2F5D6552-619F-444E-8FAC-27E5903A1C7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Domain.Core", "ProductManagment.Domain.Core\ProductManagment.Domain.Core.csproj", "{2E5AA789-2735-47E8-983A-75A11D5B3C7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Domain.Core", "src\ProductManagment.Domain.Core\ProductManagment.Domain.Core.csproj", "{2E5AA789-2735-47E8-983A-75A11D5B3C7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.CrossCutting", "ProductManagment.CrossCutting\ProductManagment.CrossCutting.csproj", "{58CA5243-0770-46D5-8C6F-28FA5D610276}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.CrossCutting", "src\ProductManagment.CrossCutting\ProductManagment.CrossCutting.csproj", "{58CA5243-0770-46D5-8C6F-28FA5D610276}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - CrossCutting", "5 - CrossCutting", "{AC1556D3-4086-4155-B1EB-EAACDE32181A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Test", "6 - Test", "{AD1B429C-44A7-4DD0-B4D1-4CCF77DE523E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagment.Test.UnitTest", "test\ProductManagment.Test.UnitTest\ProductManagment.Test.UnitTest.csproj", "{91E92563-4B5E-4F45-B077-2A555475F2A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +59,10 @@ Global
 		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58CA5243-0770-46D5-8C6F-28FA5D610276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E92563-4B5E-4F45-B077-2A555475F2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E92563-4B5E-4F45-B077-2A555475F2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E92563-4B5E-4F45-B077-2A555475F2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E92563-4B5E-4F45-B077-2A555475F2A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +74,6 @@ Global
 		{54ACC33D-0BC3-41FF-B712-2F449D0869EE} = {2F5D6552-619F-444E-8FAC-27E5903A1C7F}
 		{2E5AA789-2735-47E8-983A-75A11D5B3C7E} = {1F9F50A4-E20F-4453-A575-DE4D878AFD53}
 		{58CA5243-0770-46D5-8C6F-28FA5D610276} = {AC1556D3-4086-4155-B1EB-EAACDE32181A}
+		{91E92563-4B5E-4F45-B077-2A555475F2A1} = {AD1B429C-44A7-4DD0-B4D1-4CCF77DE523E}
 	EndGlobalSection
 EndGlobal
