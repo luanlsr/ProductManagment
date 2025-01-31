@@ -5,5 +5,6 @@ namespace ProductManagment.Domain.Interfaces.Services
 {
     public interface IStockService : IService<StockDTO, Guid>
     {
+        Task<int> GetCountAsync();
     }
 }

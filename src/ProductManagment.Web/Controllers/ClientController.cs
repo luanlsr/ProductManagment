@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductManagment.Application.Services;
 using ProductManagment.Domain.DTOs;
 using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces.Services;
@@ -36,6 +37,22 @@ namespace ProductManagment.Web.Controllers
         public async Task<ActionResult<Client>> GetById(Guid id)
         {
             return Ok(await _clientService.GetByIdAsync(id));
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var product = await _clientService.GetByNameAsync(name);
+            if (product == null) return NotFound(new { Message = $"Client '{name}' not found." });
+
+            return Ok(product);
+        }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount()
+        {
+            var count = await _clientService.GetCountAsync();
+            return Ok(new { TotalClients = count });
         }
 
 

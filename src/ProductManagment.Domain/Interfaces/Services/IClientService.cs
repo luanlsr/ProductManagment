@@ -5,5 +5,7 @@ namespace ProductManagment.Domain.Interfaces.Services
 {
     public interface IClientService : IService<ClientDTO, Guid>
     {
+        Task<int> GetCountAsync();
+        Task<ClientDTO> GetByNameAsync(string name);
     }
 }

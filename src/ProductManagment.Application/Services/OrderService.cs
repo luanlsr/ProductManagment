@@ -69,6 +69,11 @@ namespace ProductManagment.Application.Services
             return _mapper.Map<OrderDTO>(order);
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.OrderRepository.CountAsync();
+        }
+
         public async Task UpdateStatusAsync(OrderDTO orderDto)
         {
             if (orderDto.Id == Guid.Empty)

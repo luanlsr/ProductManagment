@@ -59,6 +59,20 @@ namespace ProductManagment.Application.Services
             return clientDto;
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.ClientRepository.CountAsync();
+        }
+
+        public async Task<ClientDTO> GetByNameAsync(string name)
+        {
+            var client = await _unitOfWork.ClientRepository.GetByNameAsync(p => p.Name, name);
+            if (client == null)
+                throw new NotFoundException($"Client with name '{name}' not found.");
+
+            return _mapper.Map<ClientDTO>(client);
+        }
+
         public async Task UpdateAsync(ClientDTO clientDto)
         {
             Validate(clientDto, _validator);

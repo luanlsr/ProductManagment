@@ -58,6 +58,20 @@ namespace ProductManagment.Application.Services
             return productDTO;
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.ProductRepository.CountAsync();
+        }
+
+        public async Task<ProductDTO> GetByNameAsync(string name)
+        {
+            var product = await _unitOfWork.ProductRepository.GetByNameAsync(p => p.Name, name);
+            if (product == null)
+                throw new NotFoundException($"Product with name '{name}' not found.");
+
+            return _mapper.Map<ProductDTO>(product);
+        }
+
         public async Task UpdateAsync(ProductDTO productDto)
         {
             Validate(productDto, _validator);

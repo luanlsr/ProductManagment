@@ -60,6 +60,11 @@ namespace ProductManagment.Application.Services
             return stockDto;
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.StockRepository.CountAsync();
+        }
+
         public async Task UpdateAsync(StockDTO stockDto)
         {
             Validate(stockDto, _validator);

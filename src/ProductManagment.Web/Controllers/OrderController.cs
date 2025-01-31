@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductManagment.Application.Services;
 using ProductManagment.Domain.DTOs;
 using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces.Services;
@@ -37,6 +38,14 @@ namespace ProductManagment.Web.Controllers
         public async Task<ActionResult<OrderDTO>> GetById(Guid id)
         {
             return Ok(await _orderService.GetByIdAsync(id));
+        }
+
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount()
+        {
+            var count = await _orderService.GetCountAsync();
+            return Ok(new { TotalOrders = count });
         }
 
         [HttpPut("{id}/status")]

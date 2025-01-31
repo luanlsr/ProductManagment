@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductManagment.Application.Services;
 using ProductManagment.Domain.DTOs;
 using ProductManagment.Domain.Entities;
 using ProductManagment.Domain.Interfaces.Services;
@@ -36,6 +37,13 @@ namespace ProductManagment.Web.Controllers
         public async Task<ActionResult<StockDTO>> GetById(Guid id)
         {
             return Ok(await _stockService.GetByIdAsync(id));
+        }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount()
+        {
+            var count = await _stockService.GetCountAsync();
+            return Ok(new { TotalStocks = count });
         }
 
 

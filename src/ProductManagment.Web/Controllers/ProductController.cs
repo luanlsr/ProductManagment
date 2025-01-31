@@ -38,6 +38,22 @@ namespace ProductManagment.Web.Controllers
             return Ok(await _productService.GetByIdAsync(id));
         }
 
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var product = await _productService.GetByNameAsync(name);
+            if (product == null) return NotFound(new { Message = $"Product '{name}' not found." });
+
+            return Ok(product);
+        }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount()
+        {
+            var count = await _productService.GetCountAsync();
+            return Ok(new { TotalProducts = count });
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] ProductDTO productDto)
         {

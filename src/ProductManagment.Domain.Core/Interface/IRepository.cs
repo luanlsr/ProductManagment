@@ -14,6 +14,8 @@ namespace ProductManagment.Domain.Core.Interface
         Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> GetByIdAsync(TId id, params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> UpdateAsync(TEntity entity);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null); 
+        Task<TEntity> GetByNameAsync(Expression<Func<TEntity, string>> nameSelector, string name, params Expression<Func<TEntity, object>>[] includeProperties);
         Task DeleteAsync(TId id);
         void Dispose();
 

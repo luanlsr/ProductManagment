@@ -13,6 +13,7 @@ namespace ProductManagment.Domain.Interfaces.Services
 
         Task<OrderDTO> GetByIdAsync(Guid id);
 
+        Task<int> GetCountAsync();
         Task UpdateStatusAsync(OrderDTO entity);
 
         Task DeleteAsync(OrderDTO entity);
